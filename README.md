@@ -5,36 +5,7 @@
     <meta charset='UTF-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MESSAGE APP</title>
-    <style>
-        body
-            {
-               font-family: Arial, sans-srif;
-               margin: 20px;
-               line-height: 1.6;
-               color: #333;
-             }
-
-hi
-{
-    color: #333;
-}
-h2
-{
-    color: #666;
-}
-
-p
-{
-    color:#777;
-}
-
-code
-{
-    background-color: #f4f4f4;
-    padding: 2px 4px;
-    border-radius: 4px;
-}
-</style>
+    
 </head>
 
 <body>
