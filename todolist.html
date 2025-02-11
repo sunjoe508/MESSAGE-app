@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate To-Do Scheduler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            margin: 20px;
+            text-align: center;
+            transition: background 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            text-align: center;
+        }
+        .day-card {
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            min-height: 100px;
+        }
+        input, button, select, textarea {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        .dark-mode {
+            background: #222;
+            color: white;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ultimate To-Do Scheduler</h1>
+        <textarea id="tasks" placeholder="Enter all tasks separated by commas"></textarea>
+        <button onclick="generateSchedule()">Generate Schedule</button>
+        <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+        <h2>Task Calendar</h2>
+        <div id="schedule" class="calendar"></div>
+    </div>
+
+    <script>
+        let fullSchedule = [];
+        
+        function generateRandomTime() {
+            let hours = Math.floor(Math.random() * 12) + 1;
+            let minutes = Math.random() < 0.5 ? "00" : "30";
+            let ampm = Math.random() < 0.5 ? "AM" : "PM";
+            return `${hours}:${minutes} ${ampm}`;
+        }
+
+        function generateSchedule() {
+            const tasks = document.getElementById("tasks").value.split(",").map(task => task.trim());
+            let schedule = Array.from({ length: 30 }, () => []);
+            tasks.forEach((task, index) => {
+                let day = index % 30;
+                schedule[day].push({ time: generateRandomTime(), task, completed: false });
+            });
+            fullSchedule = schedule;
+            displaySchedule(schedule);
+        }
+
+        function displaySchedule(schedule) {
+            const scheduleContainer = document.getElementById("schedule");
+            scheduleContainer.innerHTML = "";
+            for (let i = 1; i <= 30; i++) {
+                let dayCard = document.createElement("div");
+                dayCard.className = "day-card";
+                dayCard.innerHTML = `<h3>Day ${i}</h3><ul>${(schedule[i-1] || []).map((item, index) => `<li onclick="toggleCompletion(${i-1},${index})" class="${item.completed ? 'completed' : ''}">${item.time} - ${item.task}</li>`).join('')}</ul>`;
+                scheduleContainer.appendChild(dayCard);
+            }
+        }
+
+        function toggleCompletion(day, index) {
+            fullSchedule[day][index].completed = !fullSchedule[day][index].completed;
+            displaySchedule(fullSchedule);
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+    </script>
+</body>
+</html>
